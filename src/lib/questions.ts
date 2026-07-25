@@ -3,11 +3,10 @@ export type Question = {
   subject: "math" | "port";
   question: string;
   options: string[];
-  correct: number; 
+  correct: number;
 };
 
 export const questions: Question[] = [
-  
   {
     id: 1,
     subject: "math",
@@ -76,10 +75,8 @@ export const questions: Question[] = [
     subject: "math",
     question: "Quanto é 1/2 + 1/3?",
     options: ["2/5", "5/6", "2/6", "3/5"],
-    correct: 1, 
+    correct: 1,
   },
-
-  
   {
     id: 11,
     subject: "port",
@@ -99,56 +96,55 @@ export const questions: Question[] = [
     subject: "port",
     question: 'Qual é o plural de "cidadão"?',
     options: ["cidadãos", "cidadões", "cidadães", "cidadãos"],
-    correct: 0, 
+    correct: 0,
   },
   {
     id: 14,
     subject: "port",
     question: 'Qual é a separação silábica correta da palavra "pássaro"?',
     options: ["pás-sa-ro", "pá-sa-ro", "pás-sar-o", "pa-ssa-ro"],
-    correct: 0, 
+    correct: 0,
   },
   {
     id: 15,
     subject: "port",
-    question: 'Qual das palavras abaixo está escrita corretamente?',
+    question: "Qual das palavras abaixo está escrita corretamente?",
     options: ["Excessão", "Exceção", "Eceção", "Exesão"],
-    correct: 1, 
+    correct: 1,
   },
   {
     id: 16,
     subject: "port",
     question: 'Complete a frase: "Estudei muito, _____ não passei."',
     options: ["mais", "mas", "más", "mais"],
-    correct: 1, 
+    correct: 1,
   },
   {
     id: 17,
     subject: "port",
     question: 'Qual é o feminino de "cavaleiro"?',
     options: ["Cavaleira", "Cavaleiroa", "Cavala", "Amazona"],
-    correct: 0, 
+    correct: 0,
   },
   {
     id: 18,
     subject: "port",
     question: 'Qual é o superlativo absoluto sintético de "bom"?',
     options: ["Beníssimo", "Bondoso", "Ótimo", "Boníssimo"],
-    correct: 2, 
+    correct: 3,
   },
   {
     id: 19,
     subject: "port",
     question: 'Qual a classe gramatical da palavra "rapidamente"?',
     options: ["Adjetivo", "Advérbio", "Substantivo", "Verbo"],
-    correct: 1, 
+    correct: 1,
   },
   {
     id: 20,
     subject: "port",
     question: 'Na frase "O menino correu", qual é o sujeito?',
     options: ["O", "menino", "correu", "O menino"],
-    correct: 1, 
-    
+    correct: 1,
   },
 ];

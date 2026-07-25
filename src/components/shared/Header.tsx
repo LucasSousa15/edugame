@@ -3,22 +3,20 @@ import { Button } from "@/components/ui/button";
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-20 border-b border-border/60 bg-background/80 backdrop-blur-xl">
-      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 sm:h-[4.5rem] sm:px-6 lg:px-8">
-        <Link
-          href="/"
-          className="group flex items-center gap-3 rounded-2xl border border-primary/10 bg-background/70 px-3 py-2 shadow-sm transition-all hover:-translate-y-px hover:border-primary/20 hover:bg-primary/10"
-        >
-          <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-secondary text-lg shadow-md transition-transform group-hover:scale-105">
+    <header className="sticky top-0 z-20 border-b border-slate-200/60 bg-white/80 text-slate-700 backdrop-blur-xl">
+      <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between px-4 sm:h-16 sm:px-6 lg:px-8">
+        <Link href="/" className="flex items-center gap-3 rounded-2xl px-2 py-1 transition-colors hover:bg-slate-100">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-950 text-sm text-white shadow-sm">
             🎮
           </span>
           <span className="hidden min-w-0 flex-col leading-tight sm:flex">
-            <span className="text-sm font-semibold text-foreground">EduGame Carapicuíba</span>
-            <span className="text-xs text-muted-foreground">Aprenda brincando</span>
+            <span className="text-sm font-semibold text-slate-900">EduGame Carapicuíba</span>
+            <span className="text-xs text-slate-500">Aprenda brincando</span>
           </span>
         </Link>
+
         <nav className="flex items-center gap-2">
-          <Button variant="ghost" asChild className="rounded-full px-4 py-2 text-sm hover:bg-primary/10">
+          <Button variant="ghost" asChild className="rounded-full px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 hover:text-slate-900">
             <Link href="/">Início</Link>
           </Button>
         </nav>

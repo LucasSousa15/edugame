@@ -1,9 +1,9 @@
 export default function Footer() {
   return (
-    <footer className="border-t border-border/60 bg-background/75 backdrop-blur-xl">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 py-5 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-        <p className="font-medium text-foreground">EduGame Carapicuíba</p>
-        <p className="sm:text-right">ODS 4 · Projeto de Atividades Extensionistas - UNINTER</p>
+    <footer className="border-t border-slate-200/60 bg-white/80 text-slate-500 backdrop-blur-xl">
+      <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 text-xs sm:px-6 lg:px-8">
+        <span>EduGame Carapicuíba</span>
+        <span>ODS 4 · Projeto UNINTER</span>
       </div>
     </footer>
   );
