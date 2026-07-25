@@ -95,19 +95,34 @@
   50% { box-shadow: 0 0 24px color-mix(in srgb, var(--primary) 18%, transparent); }
 }
 
+html {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  overflow-x: clip;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
 body {
-  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0;
   background:
     radial-gradient(circle at top left, color-mix(in srgb, var(--primary) 14%, transparent), transparent 32%),
     radial-gradient(circle at bottom right, color-mix(in srgb, var(--secondary) 16%, transparent), transparent 35%),
     linear-gradient(135deg, var(--background) 0%, color-mix(in srgb, var(--card) 85%, var(--background)) 100%);
   color: var(--foreground);
+  overflow-x: clip;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .page-shell {
   position: relative;
   isolation: isolate;
+  overflow-x: clip;
 }
 
 .page-shell::before,

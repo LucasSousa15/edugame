@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
@@ -18,6 +17,7 @@ export default function GamePage() {
   const [score, setScore] = useState(0);
   const [answered, setAnswered] = useState(false);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
+  const [progressStep, setProgressStep] = useState(0);
   const [badges, setBadges] = useState<string[]>([]);
 
   useEffect(() => {
@@ -42,6 +42,7 @@ export default function GamePage() {
     setAnswered(true);
     if (index === currentQuestion.correct) {
       setScore((prev) => prev + 10);
+      setProgressStep((prev) => Math.min(prev + 1, totalQuestions));
       const newScore = score + 10;
       if (newScore === 20 && !badges.includes("Primeiros passos")) {
         setBadges((prev) => [...prev, "Primeiros passos"]);
@@ -50,6 +51,8 @@ export default function GamePage() {
       } else if (newScore === 60 && !badges.includes("Mestre")) {
         setBadges((prev) => [...prev, "Mestre"]);
       }
+    } else {
+      setProgressStep((prev) => Math.max(prev - 1, 0));
     }
   };
 
@@ -73,22 +76,44 @@ export default function GamePage() {
     return <div className="py-8 text-center text-muted-foreground">Carregando...</div>;
   }
 
+  const characterPosition = totalQuestions > 0 ? (progressStep / totalQuestions) * 100 : 0;
+
   return (
-    <div className="page-shell flex min-h-[70vh] flex-col items-center justify-center py-8">
-      <Card className="animated-card w-full max-w-2xl border-primary/20 bg-card/80 backdrop-blur-xl">
-        <CardHeader>
-          <div className="flex items-center justify-between gap-3">
+    <div className="page-shell flex flex-col items-center justify-center py-8 sm:py-10">
+      <Card className="animated-card w-full max-w-3xl overflow-hidden border-primary/20 bg-card/80 backdrop-blur-xl">
+        <CardHeader className="space-y-4 px-6 pt-6 sm:px-8 sm:pt-8">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <CardTitle className="text-2xl font-semibold text-primary">
               {subject === "math" ? "Matemática" : "Língua Portuguesa"}
             </CardTitle>
-            <Badge variant="outline" className="rounded-full border-primary/20 bg-primary/10 text-sm text-primary">
+            <Badge variant="outline" className="self-start rounded-full border-primary/20 bg-primary/10 text-sm text-primary sm:self-auto">
               {currentIndex + 1} / {totalQuestions}
             </Badge>
           </div>
-          <Progress value={((currentIndex + 1) / totalQuestions) * 100} className="mt-3 h-2" />
+          <div className="rounded-[1.5rem] border border-primary/15 bg-background/80 p-4 shadow-sm">
+            <div className="mb-3 flex items-center justify-between text-sm text-muted-foreground">
+              <span>Progresso</span>
+              <span>
+                {progressStep} / {totalQuestions}
+              </span>
+            </div>
+            <div className="relative h-4 rounded-full bg-border/20">
+              <div
+                className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-primary to-secondary"
+                style={{ width: `${characterPosition}%` }}
+              />
+              <div
+                className="absolute top-1/2 -translate-y-1/2 rounded-full border border-border/80 bg-background px-2 py-1 text-sm shadow-md"
+                style={{ left: `calc(${characterPosition}% - 0.75rem)` }}
+              >
+                🐾
+              </div>
+            </div>
+          </div>
+          <Progress value={((currentIndex + 1) / totalQuestions) * 100} className="h-2" />
         </CardHeader>
-        <CardContent className="space-y-6">
-          <p className="text-lg font-medium text-foreground">{currentQuestion.question}</p>
+        <CardContent className="space-y-6 px-6 pb-6 pt-0 sm:px-8">
+          <p className="text-lg font-medium leading-relaxed text-foreground">{currentQuestion.question}</p>
           <div className="grid grid-cols-1 gap-3">
             {currentQuestion.options.map((option, idx) => {
               const isCorrect = answered && idx === currentQuestion.correct;
@@ -118,9 +143,12 @@ export default function GamePage() {
             {badges.length > 0 && <span>🏅 {badges.join(", ")}</span>}
           </div>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="px-6 pb-6 sm:px-8">
           {answered && (
-            <Button onClick={handleNext} className="w-full rounded-2xl bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-md transition-all hover:-translate-y-1 hover:shadow-lg">
+            <Button
+              onClick={handleNext}
+              className="w-full rounded-2xl bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-md transition-all hover:-translate-y-1 hover:shadow-lg"
+            >
               {currentIndex < totalQuestions - 1 ? "Próxima pergunta" : "Ver resultado"}
             </Button>
           )}
