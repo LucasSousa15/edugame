@@ -8,7 +8,6 @@ import { CheckCircle2, CircleAlert } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { questions } from "@/lib/questions";
 
 const optionLabels = ["A", "B", "C", "D"];
@@ -65,6 +64,11 @@ export default function GameClient() {
   const currentQuestion = filteredQuestions[currentIndex];
   const totalQuestions = filteredQuestions.length;
   const theme = subject ? subjectTheme[subject] : subjectTheme.math;
+  const progressTrackClass = subject === "port" ? "bg-white/35" : "bg-white/35";
+  const progressFillClass =
+    subject === "port"
+      ? "from-[#ff6b2d] via-[#ffad52] to-[#ffd88a]"
+      : "from-[#1f54e8] via-[#53a4ff] to-[#89d3ff]";
   const progressPercent = totalQuestions > 0 ? ((currentIndex + (answered ? 1 : 0)) / totalQuestions) * 100 : 0;
   const progressState = answered ? (selectedOption === currentQuestion?.correct ? "correct" : "wrong") : currentIndex === 0 ? "idle" : "thinking";
 
@@ -145,7 +149,12 @@ export default function GameClient() {
                 <span>{Math.round(progressPercent)}%</span>
               </div>
               <div className="relative">
-                <Progress value={progressPercent} className="h-3 bg-white/70" />
+                <div className={`h-3 w-full overflow-hidden rounded-full ${progressTrackClass}`}>
+                  <div
+                    className={`h-full rounded-full bg-gradient-to-r ${progressFillClass} transition-[width] duration-300 ease-out`}
+                    style={{ width: `${progressPercent}%` }}
+                  />
+                </div>
                 <div
                   className="absolute -top-5 transition-all duration-300"
                   style={{ left: `calc(${progressPercent}% - 20px)` }}
@@ -183,7 +192,7 @@ export default function GameClient() {
 
                 return (
                   <Button
-                    key={option}
+                    key={`${currentQuestion.id}-${index}`}
                     variant="outline"
                     className={`h-auto w-full justify-start rounded-[1.2rem] border px-4 py-4 text-left transition-all ${
                       isCorrect
