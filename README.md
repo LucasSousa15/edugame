@@ -52,6 +52,12 @@ O projeto usa Next.js 16 App Router, React 19, TypeScript e Tailwind CSS 4. A AP
 
 O projeto está pronto para o fluxo Git + Vercel. Envie a branch, importe o repositório na Vercel e cadastre as mesmas variáveis do `.env.example` em **Settings > Environment Variables**. Faça o primeiro deploy, copie a URL gerada para `NEXT_PUBLIC_SITE_URL` e execute um novo deploy para atualizar os metadados.
 
+## CI/CD
+
+O workflow `.github/workflows/ci.yml` executa `npm ci` e `npm run build` em pull requests e atualizações da branch `main`. O comando de build inclui lint e verificação TypeScript antes de gerar a aplicação de produção.
+
+Com o repositório conectado à Vercel e `main` definida como **Production Branch**, cada push nessa branch dispara automaticamente um novo deploy. Branches e pull requests recebem deploys de Preview.
+
 ## Limite acadêmico conhecido
 
 O protótipo comprova desenvolvimento técnico, mas não foi aplicado em uma escola municipal e não possui evidências de participação ou impacto comunitário. O relatório final registra essa lacuna sem fabricar dados. Para atender integralmente ao manual seria necessário realizar uma sessão real, obter autorização, registrar evidências e avaliar os resultados.
