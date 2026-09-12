@@ -25,16 +25,18 @@ npm run dev
 
 Acesse `http://localhost:3000`.
 
-Para habilitar o envio por e-mail, crie um `.env.local` na raiz:
+Para habilitar o envio por e-mail sem domínio próprio, cadastre e verifique um remetente individual na Brevo e crie um `.env.local` na raiz:
 
 ```text
-RESEND_API_KEY=sua_chave
-RESEND_FROM_EMAIL=EduGame <remetente@dominio-verificado.com>
+EMAIL_PROVIDER=brevo
+BREVO_API_KEY=sua_chave
+BREVO_SENDER_EMAIL=seu-email-verificado@gmail.com
+BREVO_SENDER_NAME=EduGame Carapicuíba
 RESULT_RECIPIENT_EMAIL=professor@escola.com
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
-Use `.env.example` como referência e nunca envie credenciais ao Git. O destinatário é fixado no servidor para impedir que uma implantação pública seja usada para enviar mensagens a endereços arbitrários. Sem as três variáveis do Resend, o quiz e o ranking local continuam funcionando; apenas o envio por e-mail informa que a configuração está ausente.
+Use `.env.example` como referência e nunca envie credenciais ao Git. O destinatário é fixado no servidor para impedir que uma implantação pública seja usada para enviar mensagens a endereços arbitrários. Sem as variáveis do provedor, o quiz e o ranking local continuam funcionando; apenas o envio por e-mail informa que a configuração está ausente. A integração anterior com Resend continua disponível com `EMAIL_PROVIDER=resend`.
 
 ## Validação técnica
 
@@ -48,10 +50,8 @@ O projeto usa Next.js 16 App Router, React 19, TypeScript e Tailwind CSS 4. A AP
 
 ## Publicar na Vercel
 
-O projeto está pronto para o fluxo Git + Vercel. Depois de criar manualmente o repositório remoto, envie a branch, importe o projeto na Vercel e cadastre as variáveis de ambiente. O guia completo, incluindo a configuração do Resend e o checklist pós-deploy, está em [docs/DEPLOY_VERCEL.md](docs/DEPLOY_VERCEL.md).
+O projeto está pronto para o fluxo Git + Vercel. Envie a branch, importe o repositório na Vercel e cadastre as mesmas variáveis do `.env.example` em **Settings > Environment Variables**. Faça o primeiro deploy, copie a URL gerada para `NEXT_PUBLIC_SITE_URL` e execute um novo deploy para atualizar os metadados.
 
 ## Limite acadêmico conhecido
 
 O protótipo comprova desenvolvimento técnico, mas não foi aplicado em uma escola municipal e não possui evidências de participação ou impacto comunitário. O relatório final registra essa lacuna sem fabricar dados. Para atender integralmente ao manual seria necessário realizar uma sessão real, obter autorização, registrar evidências e avaliar os resultados.
-
-Consulte [docs/CRITERIOS.md](docs/CRITERIOS.md) para a matriz de conformidade e [docs/EVIDENCIAS.md](docs/EVIDENCIAS.md) para o roteiro de comprovação e entrega.
