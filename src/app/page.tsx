@@ -67,6 +67,7 @@ export default function Home() {
                       alt={choice.title}
                       width={220}
                       height={220}
+                      loading="eager"
                       unoptimized
                       className="h-[176px] w-[176px] object-contain drop-shadow-[0_12px_22px_rgba(15,23,42,0.18)]"
                     />

@@ -30,8 +30,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# environment files: keep secrets local, but version the example
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -39,3 +40,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local academic source material and generated deliverables
+/AE_II_validação.pdf
+/Manual_AEII_Projeto_Tecnologos_UNINTER.pdf
+/Atividades Extensionistas - Modelo de Proposta de tema e Trabalho Final (1).docx
+/output/
+/tmp/
+
+# local source images and accidental binary artifacts
+/*.png
+*.winmd

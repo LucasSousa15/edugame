@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Gamepad2 } from "lucide-react";
+import { Gamepad2, Trophy } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -18,6 +18,12 @@ export default function Header() {
         </Link>
 
         <nav className="flex items-center gap-2">
+          <Button variant="ghost" asChild className="rounded-full px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 hover:text-slate-900">
+            <Link href="/ranking">
+              <Trophy className="mr-2 size-4" aria-hidden="true" />
+              Ranking
+            </Link>
+          </Button>
           <Button variant="ghost" asChild className="rounded-full px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 hover:text-slate-900">
             <Link href="/">Início</Link>
           </Button>

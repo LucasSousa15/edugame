@@ -2,29 +2,37 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { ArrowLeft, Mail } from "lucide-react";
+import { ArrowLeft, Mail, Save, Trophy } from "lucide-react";
+import { useForm } from "react-hook-form";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { saveRankingEntry } from "@/lib/ranking";
 
 const themeMap = {
   math: {
-    title: "Matematica",
+    title: "Matemática",
     subtitle: "Gato das contas",
     image: "/assets/mascots/math/greeting.png",
     accent: "from-[#2b68ff] via-[#5ca8ff] to-[#d7ecff]",
     text: "text-[#103b93]",
   },
   port: {
-    title: "Portugues",
+    title: "Português",
     subtitle: "Gato da leitura",
     image: "/assets/mascots/port/greeting.png",
     accent: "from-[#ff7a4e] via-[#ffbf65] to-[#fff0d5]",
     text: "text-[#bf4e1e]",
   },
 } as const;
+
+type FormValues = {
+  studentName: string;
+  teacherName: string;
+};
 
 export default function ResultClient() {
   const searchParams = useSearchParams();
@@ -37,18 +45,80 @@ export default function ResultClient() {
   const theme = themeMap[subject] ?? themeMap.math;
   const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
 
-  const handleSendEmail = () => {
-    const subjectText = encodeURIComponent("Resultado EduGame Carapicuiba");
-    const body = encodeURIComponent(
-      `Disciplina: ${theme.title}\n` +
-        `Pontuacao: ${score}\n` +
-        `Acertos: ${correct} de ${total}\n` +
-        `Aproveitamento: ${accuracy}%\n` +
-        `Badges conquistados: ${badges.join(", ") || "Nenhum"}\n` +
-        `Data: ${new Date().toLocaleDateString("pt-BR")}`
-    );
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    trigger,
+    formState: { errors, isSubmitting },
+  } = useForm<FormValues>({
+    defaultValues: {
+      studentName: "",
+      teacherName: "",
+    },
+  });
 
-    window.open(`mailto:professor@escola.com?subject=${subjectText}&body=${body}`, "_self");
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [isSent, setIsSent] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+
+  const saveResultLocally = async () => {
+    if (isSaved || !(await trigger("studentName"))) return;
+
+    saveRankingEntry(window.localStorage, {
+      studentName: getValues("studentName"),
+      subject: theme.title,
+      score,
+      total,
+      correct,
+      accuracy,
+    });
+    setIsSaved(true);
+    setStatusMessage("Resultado salvo no ranking deste dispositivo.");
+  };
+
+  const onSubmit = async (data: FormValues) => {
+    const payload = {
+      studentName: data.studentName,
+      teacherName: data.teacherName,
+      subject: theme.title,
+      score,
+      total,
+      correct,
+      accuracy,
+      badges,
+    };
+
+    try {
+      if (!isSaved) {
+        saveRankingEntry(window.localStorage, {
+          studentName: data.studentName,
+          subject: theme.title,
+          score,
+          total,
+          correct,
+          accuracy,
+        });
+        setIsSaved(true);
+      }
+      setStatusMessage("Enviando resultado...");
+      const response = await fetch("/api/email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Falha ao enviar o email");
+      }
+
+      setStatusMessage("Resultado enviado com sucesso!");
+      setIsSent(true);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Erro desconhecido";
+      setStatusMessage(message);
+    }
   };
 
   return (
@@ -74,7 +144,7 @@ export default function ResultClient() {
                   width={360}
                   height={360}
                   className="mx-auto h-auto w-[78%] drop-shadow-[0_12px_18px_rgba(15,23,42,0.12)]"
-                  priority
+                  loading="eager"
                 />
               </div>
             </div>
@@ -84,7 +154,7 @@ export default function ResultClient() {
                 <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">Resumo</p>
                 <h2 className="text-4xl font-black tracking-tight text-slate-950">{score} pontos</h2>
                 <p className="max-w-xl text-base leading-7 text-slate-700">
-                  Voce acertou {correct} de {total} perguntas. O gato registrou o resultado da aventura.
+                  Você acertou {correct} de {total} perguntas. O gato registrou o resultado da aventura.
                 </p>
               </div>
 
@@ -102,23 +172,83 @@ export default function ResultClient() {
 
               <div className="rounded-[1.35rem] bg-white/70 p-4">
                 <div className="flex items-center justify-between text-sm font-medium text-slate-700">
-                  <span>Barra de dominio</span>
+                  <span>Barra de domínio</span>
                   <span>{accuracy}%</span>
                 </div>
                 <div className="mt-3 h-3 rounded-full bg-slate-200">
                   <div className="h-3 rounded-full bg-gradient-to-r from-slate-950 via-[#2b68ff] to-[#ff7a4e]" style={{ width: `${accuracy}%` }} />
                 </div>
               </div>
+
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 rounded-[1.35rem] bg-white/80 p-4 shadow-sm">
+                <div>
+                  <p className="text-sm font-bold text-slate-900">Registrar a atividade</p>
+                  <p className="mt-1 text-sm leading-6 text-slate-600">
+                    Salve no ranking local ou, se o envio estiver configurado, compartilhe o relatório com o professor definido pela escola.
+                  </p>
+                </div>
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor="studentName">
+                    Nome do aluno
+                  </label>
+                  <input
+                    id="studentName"
+                    {...register("studentName", { required: "Informe o nome do aluno" })}
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+                    placeholder="Nome do aluno"
+                  />
+                  {errors.studentName && (
+                    <p className="mt-2 text-xs text-destructive">{errors.studentName.message}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor="teacherName">
+                    Nome do professor <span className="font-normal text-slate-500">(para envio)</span>
+                  </label>
+                  <input
+                    id="teacherName"
+                    {...register("teacherName", { required: "Informe o nome do professor" })}
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+                    placeholder="Nome do professor"
+                  />
+                  {errors.teacherName && (
+                    <p className="mt-2 text-xs text-destructive">{errors.teacherName.message}</p>
+                  )}
+                </div>
+
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full rounded-2xl border-slate-300 bg-white"
+                  disabled={isSaved}
+                  onClick={saveResultLocally}
+                >
+                  <Save className="mr-2 size-4" aria-hidden="true" />
+                  {isSaved ? "Salvo no ranking" : "Salvar no ranking deste dispositivo"}
+                </Button>
+
+                <Button type="submit" className="w-full rounded-2xl bg-slate-950 text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-slate-800" disabled={isSubmitting || isSent}>
+                  <Mail className="mr-2 size-4" />
+                  {isSent ? "Enviado" : "Enviar ao professor configurado"}
+                </Button>
+                {statusMessage ? (
+                  <p className="text-sm text-slate-700" aria-live="polite">{statusMessage}</p>
+                ) : null}
+              </form>
             </div>
           </CardContent>
 
           <CardFooter className="flex flex-col gap-3 px-5 pb-5 sm:px-7">
             <Button
-              onClick={handleSendEmail}
-              className="w-full rounded-2xl bg-slate-950 text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-slate-800"
+              asChild
+              variant="outline"
+              className="w-full rounded-2xl border-slate-200 bg-white/80 transition-all hover:-translate-y-0.5 hover:bg-slate-50"
             >
-              <Mail className="mr-2 size-4" />
-              Enviar resultado ao professor
+              <Link href="/ranking">
+                <Trophy className="mr-2 size-4" aria-hidden="true" />
+                Ver ranking local
+              </Link>
             </Button>
             <Button
               asChild
@@ -127,7 +257,7 @@ export default function ResultClient() {
             >
               <Link href="/">
                 <ArrowLeft className="mr-2 size-4" />
-                Voltar ao inicio
+                Voltar ao início
               </Link>
             </Button>
           </CardFooter>

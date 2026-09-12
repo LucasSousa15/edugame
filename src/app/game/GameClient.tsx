@@ -138,7 +138,7 @@ export default function GameClient() {
                   fill
                   sizes="156px"
                   className="object-contain drop-shadow-[0_12px_18px_rgba(15,23,42,0.12)]"
-                  priority
+                  loading="eager"
                 />
               </div>
             </div>
@@ -149,7 +149,14 @@ export default function GameClient() {
                 <span>{Math.round(progressPercent)}%</span>
               </div>
               <div className="relative">
-                <div className={`h-3 w-full overflow-hidden rounded-full ${progressTrackClass}`}>
+                <div
+                  className={`h-3 w-full overflow-hidden rounded-full ${progressTrackClass}`}
+                  role="progressbar"
+                  aria-label="Progresso da rodada"
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-valuenow={Math.round(progressPercent)}
+                >
                   <div
                     className={`h-full rounded-full bg-gradient-to-r ${progressFillClass} transition-[width] duration-300 ease-out`}
                     style={{ width: `${progressPercent}%` }}
@@ -213,6 +220,22 @@ export default function GameClient() {
                   </Button>
                 );
               })}
+
+              {answered ? (
+                <div
+                  className={`rounded-2xl border p-4 text-sm leading-6 ${
+                    selectedOption === currentQuestion.correct
+                      ? "border-emerald-200 bg-emerald-50 text-emerald-950"
+                      : "border-amber-200 bg-amber-50 text-amber-950"
+                  }`}
+                  aria-live="polite"
+                >
+                  <p className="font-bold">
+                    {selectedOption === currentQuestion.correct ? "Muito bem!" : "Vamos aprender com essa tentativa."}
+                  </p>
+                  <p>{currentQuestion.explanation}</p>
+                </div>
+              ) : null}
             </CardContent>
 
             <CardFooter className="px-5 pb-5 sm:px-7">

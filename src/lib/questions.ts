@@ -4,6 +4,7 @@ export type Question = {
   question: string;
   options: string[];
   correct: number;
+  explanation: string;
 };
 
 export const questions: Question[] = [
@@ -13,6 +14,7 @@ export const questions: Question[] = [
     question: "Quanto é 5 + 3?",
     options: ["6", "7", "8", "9"],
     correct: 2,
+    explanation: "Somando 5 e 3, chegamos a 8.",
   },
   {
     id: 2,
@@ -20,6 +22,7 @@ export const questions: Question[] = [
     question: "Quanto é 10 - 4?",
     options: ["4", "5", "6", "7"],
     correct: 2,
+    explanation: "Ao retirar 4 de 10, restam 6.",
   },
   {
     id: 3,
@@ -27,6 +30,7 @@ export const questions: Question[] = [
     question: "Quanto é 2 + 7?",
     options: ["8", "9", "10", "11"],
     correct: 1,
+    explanation: "A soma de 2 com 7 é 9.",
   },
   {
     id: 4,
@@ -34,6 +38,7 @@ export const questions: Question[] = [
     question: "Quanto é 3 × 4?",
     options: ["7", "10", "12", "14"],
     correct: 2,
+    explanation: "Três grupos de quatro formam 12.",
   },
   {
     id: 5,
@@ -41,6 +46,7 @@ export const questions: Question[] = [
     question: "Quanto é 20 ÷ 5?",
     options: ["2", "3", "4", "5"],
     correct: 2,
+    explanation: "Vinte dividido em cinco grupos resulta em 4 por grupo.",
   },
   {
     id: 6,
@@ -48,6 +54,7 @@ export const questions: Question[] = [
     question: "Qual número vem depois do 29?",
     options: ["28", "30", "31", "39"],
     correct: 1,
+    explanation: "Na sequência dos números naturais, 30 vem logo depois de 29.",
   },
   {
     id: 7,
@@ -55,6 +62,7 @@ export const questions: Question[] = [
     question: "Qual número é maior?",
     options: ["12", "21", "8", "15"],
     correct: 1,
+    explanation: "Entre as opções, 21 é o número de maior valor.",
   },
   {
     id: 8,
@@ -62,6 +70,7 @@ export const questions: Question[] = [
     question: "Quantos lados tem um triângulo?",
     options: ["2", "3", "4", "5"],
     correct: 1,
+    explanation: "Todo triângulo possui três lados.",
   },
   {
     id: 9,
@@ -69,6 +78,7 @@ export const questions: Question[] = [
     question: "Maria tinha 6 balas e ganhou mais 4. Quantas balas ela tem agora?",
     options: ["8", "9", "10", "11"],
     correct: 2,
+    explanation: "Seis balas mais quatro balas totalizam 10.",
   },
   {
     id: 10,
@@ -76,6 +86,7 @@ export const questions: Question[] = [
     question: "João tinha 15 carrinhos e perdeu 5. Com quantos carrinhos ele ficou?",
     options: ["5", "10", "15", "20"],
     correct: 1,
+    explanation: "Quinze menos cinco é igual a 10.",
   },
   {
     id: 11,
@@ -83,6 +94,7 @@ export const questions: Question[] = [
     question: 'Qual é o contrário de "feliz"?',
     options: ["Alegre", "Triste", "Animado", "Contente"],
     correct: 1,
+    explanation: "Triste expressa uma ideia contrária a feliz.",
   },
   {
     id: 12,
@@ -90,6 +102,7 @@ export const questions: Question[] = [
     question: 'Qual é o plural de "gato"?',
     options: ["Gatoes", "Gatos", "Gatões", "Gatas"],
     correct: 1,
+    explanation: "O plural regular de gato é gatos.",
   },
   {
     id: 13,
@@ -97,6 +110,7 @@ export const questions: Question[] = [
     question: "Qual palavra começa com a letra B?",
     options: ["Casa", "Bola", "Dado", "Foca"],
     correct: 1,
+    explanation: "Bola começa com a letra B.",
   },
   {
     id: 14,
@@ -104,6 +118,7 @@ export const questions: Question[] = [
     question: 'Qual palavra rima com "pato"?',
     options: ["Gato", "Casa", "Bola", "Mesa"],
     correct: 0,
+    explanation: "Pato e gato terminam com o mesmo som: ato.",
   },
   {
     id: 15,
@@ -111,6 +126,7 @@ export const questions: Question[] = [
     question: "Qual destas palavras é o nome de um animal?",
     options: ["Mesa", "Escola", "Cachorro", "Janela"],
     correct: 2,
+    explanation: "Cachorro é o único animal entre as opções.",
   },
   {
     id: 16,
@@ -118,6 +134,7 @@ export const questions: Question[] = [
     question: 'Complete a frase: "O peixe nada no _____."',
     options: ["Céu", "Chão", "Mar", "Telhado"],
     correct: 2,
+    explanation: "O peixe vive e nada no mar.",
   },
   {
     id: 17,
@@ -125,6 +142,7 @@ export const questions: Question[] = [
     question: 'Quantas sílabas tem a palavra "boneca"?',
     options: ["1", "2", "3", "4"],
     correct: 2,
+    explanation: "Boneca é separada em três sílabas: bo-ne-ca.",
   },
   {
     id: 18,
@@ -132,6 +150,7 @@ export const questions: Question[] = [
     question: "Qual destas palavras está escrita corretamente?",
     options: ["Caza", "Kasa", "Casa", "Cassa"],
     correct: 2,
+    explanation: "Casa é escrita com C no início e S entre vogais.",
   },
   {
     id: 19,
@@ -139,6 +158,7 @@ export const questions: Question[] = [
     question: 'Na frase "A menina pulou", quem pulou?',
     options: ["A menina", "Pulou", "A", "Ninguém"],
     correct: 0,
+    explanation: "O sujeito que realizou a ação de pular foi a menina.",
   },
   {
     id: 20,
@@ -146,5 +166,6 @@ export const questions: Question[] = [
     question: "Qual sinal usamos no final de uma pergunta?",
     options: [".", ",", "!", "?"],
     correct: 3,
+    explanation: "O ponto de interrogação indica que a frase é uma pergunta.",
   },
 ];
